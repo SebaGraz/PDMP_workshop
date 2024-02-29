@@ -1,6 +1,8 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 
+
+
 def poisson_time(a, b, u):
     if b > 0:
         if a < 0:
@@ -28,7 +30,7 @@ def pdmp_1d(x, v, post_mean, post_var, T):
         x += tau*v
         v *= -1  
         t += tau
-        trace.append((t, x, v))
+        trace.append((t, x))
         tau = poisson_time((x-post_mean)*v/post_var, v**2/post_var, np.random.rand())
     return trace
 
