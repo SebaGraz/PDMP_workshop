@@ -20,27 +20,27 @@ def poisson_time(a, b, u):
         else:
             return float('inf')
 
-def pdmp(x, v, m, sigma2, T):
+def pdmp_1d(x, v, post_mean, post_var, T):
     t = 0.0
     trace = [(t, x)]
-    tau = poisson_time((x-m)*v/sigma2, v**2/sigma2, np.random.rand())
+    tau = poisson_time((x-post_mean)*v/post_var, v**2/post_var, np.random.rand())
     while t < T:
         x += tau*v
         v *= -1  
         t += tau
         trace.append((t, x, v))
-        tau = poisson_time((x-m)*v/sigma2, v**2/sigma2, np.random.rand())
+        tau = poisson_time((x-post_mean)*v/post_var, v**2/post_var, np.random.rand())
     return trace
 
 # Initial conditions and parameters
 x_initial = 0.0
 v_initial = 1
-m = 5.0
-sigma2 = 2.0
+post_mean = 5.0
+post_var = 2.0
 T = 100.0
 
 # Generate data using the pdmp function
-xx = pdmp(x_initial, v_initial, m, sigma2, T)
+xx = pdmp_1d(x_initial, v_initial, post_mean, post_var, T)
 
 # Plotting
 plt.plot([entry[0] for entry in xx], [entry[1] for entry in xx])
